@@ -1,485 +1,1760 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <meta name="google-adsense-account" content="ca-pub-5909775624556133">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5909775624556133"
-     crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Bari Quiz — Test Your Islamic Knowledge</title>
-<style>
-  :root{
-    --bg:#0E3B36;
-    --bg-2:#123F3A;
-    --card:#14453F;
-    --gold:#C9A24B;
-    --cream:#F3EDE1;
-    --muted:#9FB9AE;
-    --good:#5FA98A;
-    --bad:#C56B5A;
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    margin:0;
-    min-height:100%;
-    background:var(--bg);
-    background-image:
-      linear-gradient(135deg, rgba(201,162,75,0.06) 25%, transparent 25%, transparent 75%, rgba(201,162,75,0.06) 75%),
-      linear-gradient(135deg, rgba(201,162,75,0.06) 25%, transparent 25%, transparent 75%, rgba(201,162,75,0.06) 75%);
-    background-size:48px 48px;
-    background-position:0 0, 24px 24px;
-    color:var(--cream);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0);
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-  }
-  .wrap{
-    width:100%;
-    max-width:520px;
-    padding:32px 0 48px;
-  }
-  header.top{
-    text-align:center;
-    margin-bottom:24px;
-  }
-  header.top .mark{
-    width:46px;height:46px;margin:0 auto 10px;
-    border:2px solid var(--gold);
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:20px;
-  }
-  header.top h1{
-    font-family:Georgia,'Times New Roman',serif;
-    font-weight:600;
-    font-size:26px;
-    margin:0 0 4px;
-    letter-spacing:0.3px;
-  }
-  header.top p{
-    margin:0;
-    color:var(--muted);
-    font-size:14px;
-  }
-  .card{
-    background:var(--card);
-    border:1px solid rgba(201,162,75,0.25);
-    border-radius:14px;
-    padding:26px 22px;
-  }
-  .progress{
-    display:flex;
-    gap:6px;
-    margin-bottom:20px;
-  }
-  .progress i{
-    flex:1;
-    height:4px;
-    border-radius:2px;
-    background:rgba(255,255,255,0.12);
-  }
-  .progress i.done{background:var(--gold);}
-  .qnum{
-    color:var(--gold);
-    font-size:13px;
-    margin-bottom:8px;
-  }
-  .qtext{
-    font-family:Georgia,'Times New Roman',serif;
-    font-size:19px;
-    line-height:1.4;
-    margin:0 0 20px;
-  }
-  .options{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .opt{
-    text-align:left;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.14);
-    color:var(--cream);
-    border-radius:10px;
-    padding:13px 16px;
-    font-size:15px;
-    cursor:pointer;
-    transition:border-color .15s, background .15s;
-  }
-  .opt:hover{border-color:var(--gold);}
-  .opt.selected{border-color:var(--gold); background:rgba(201,162,75,0.14);}
-  .opt:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
-  .nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:24px;
-  }
-  button.primary{
-    background:var(--gold);
-    color:#1a1a1a;
-    border:none;
-    border-radius:10px;
-    padding:12px 22px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-  }
-  button.primary:disabled{opacity:0.4; cursor:not-allowed;}
-  button.ghost{
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.2);
-    color:var(--cream);
-    border-radius:10px;
-    padding:12px 18px;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .hidden{display:none !important;}
 
-  /* results view */
-  .score-ring{
-    width:150px;height:150px;
-    margin:6px auto 18px;
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    background:conic-gradient(var(--gold) calc(var(--pct) * 1%), rgba(255,255,255,0.08) 0);
-  }
-  .score-ring .inner{
-    width:118px;height:118px;
-    border-radius:50%;
-    background:var(--card);
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-  }
-  .score-ring .inner .n{font-family:Georgia,serif;font-size:30px;font-weight:600;}
-  .score-ring .inner .lbl{font-size:12px;color:var(--muted);}
-  .verdict{
-    text-align:center;
-    font-family:Georgia,serif;
-    font-size:20px;
-    margin:0 0 6px;
-  }
-  .subverdict{
-    text-align:center;
-    color:var(--muted);
-    font-size:14px;
-    margin:0 0 24px;
-  }
-  .review{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-bottom:24px;
-    max-height:260px;
-    overflow-y:auto;
-  }
-  .review-item{
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:10px;
-    padding:10px 12px;
-    font-size:13.5px;
-  }
-  .review-item .rq{color:var(--muted); margin-bottom:4px;}
-  .review-item .ra{color:var(--bad);}
-  .review-item .ra.ok{color:var(--good);}
-  .review-item .rc{color:var(--good);}
-  .share-title{
-    font-size:14px;
-    color:var(--muted);
-    margin:0 0 10px;
-    text-align:center;
-  }
-  .share-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-    margin-bottom:18px;
-  }
-  .share-btn{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:11px 16px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,0.16);
-    background:rgba(255,255,255,0.04);
-    color:var(--cream);
-    font-size:14px;
-    text-decoration:none;
-    cursor:pointer;
-  }
-  .share-btn.wa{border-color:#25D366; color:#25D366;}
-  .share-btn.tg{border-color:#54A9EB; color:#54A9EB;}
-  .share-btn.fb{border-color:#4267B2; color:#8fa8db;}
-  .share-btn.x{border-color:#cfcfcf;}
-  .retake{
-    display:block;
-    width:100%;
-    text-align:center;
-    margin-top:6px;
-  }
-  footer{
-    text-align:center;
-    color:var(--muted);
-    font-size:12px;
-    margin-top:22px;
-  }
-</style>
+  <!-- Google AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-5909775624556133">
+
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5909775624556133"
+    crossorigin="anonymous"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <meta name="description"
+        content="Bari Quiz — Test your Islamic knowledge with a short and fun Islamic quiz.">
+
+  <meta name="theme-color" content="#071f1c">
+
+  <title>Bari Quiz — Test Your Islamic Knowledge</title>
+
+  <style>
+    :root{
+      --bg:#071f1c;
+      --bg2:#0b2925;
+      --card:#103a34;
+      --card2:#12433c;
+      --gold:#d6ad52;
+      --gold-light:#f0d68a;
+      --cream:#f7f1e5;
+      --muted:#a9c0b8;
+      --good:#6fc39d;
+      --bad:#df806c;
+      --border:rgba(214,173,82,.22);
+      --white-border:rgba(255,255,255,.12);
+      --shadow:0 20px 60px rgba(0,0,0,.28);
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(214,173,82,.12), transparent 35%),
+        linear-gradient(145deg,var(--bg),var(--bg2));
+      color:var(--cream);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+      padding:
+        env(safe-area-inset-top,0)
+        16px
+        env(safe-area-inset-bottom,0);
+
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.045;
+      background-image:
+        linear-gradient(30deg,#fff 12%,transparent 12.5%,transparent 87%,#fff 87.5%,#fff),
+        linear-gradient(150deg,#fff 12%,transparent 12.5%,transparent 87%,#fff 87.5%,#fff);
+      background-size:52px 90px;
+      background-position:0 0,26px 45px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:560px;
+      padding:38px 0 55px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* HEADER */
+
+    header.top{
+      text-align:center;
+      margin-bottom:26px;
+    }
+
+    .brand-mark{
+      width:62px;
+      height:62px;
+      margin:0 auto 14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      border:1px solid rgba(214,173,82,.65);
+      border-radius:50%;
+
+      background:
+        radial-gradient(circle,rgba(214,173,82,.16),transparent 68%);
+
+      box-shadow:
+        0 0 0 7px rgba(214,173,82,.035),
+        0 0 35px rgba(214,173,82,.10);
+
+      font-size:28px;
+      color:var(--gold-light);
+    }
+
+    .brand-small{
+      color:var(--gold);
+      text-transform:uppercase;
+      letter-spacing:3px;
+      font-size:10px;
+      font-weight:700;
+      margin-bottom:7px;
+    }
+
+    header.top h1{
+      font-family:Georgia,"Times New Roman",serif;
+      font-weight:600;
+      font-size:32px;
+      margin:0 0 7px;
+      letter-spacing:.3px;
+    }
+
+    header.top p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* CARD */
+
+    .card{
+      position:relative;
+      overflow:hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.035),
+          rgba(255,255,255,.01)
+        ),
+        var(--card);
+
+      border:1px solid var(--border);
+      border-radius:20px;
+
+      padding:25px 22px;
+
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:12%;
+      right:12%;
+      height:1px;
+      background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(240,214,138,.55),
+        transparent
+      );
+    }
+
+    /* PROGRESS */
+
+    .progress-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:9px;
+    }
+
+    .progress-label{
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:1.2px;
+    }
+
+    .progress-percent{
+      color:var(--gold-light);
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .progress-track{
+      height:5px;
+      width:100%;
+      background:rgba(255,255,255,.08);
+      border-radius:10px;
+      overflow:hidden;
+      margin-bottom:23px;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(
+        90deg,
+        var(--gold),
+        var(--gold-light)
+      );
+      border-radius:10px;
+      transition:width .3s ease;
+    }
+
+    /* QUESTION */
+
+    .qnum{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+
+      color:var(--gold-light);
+      font-size:12px;
+      font-weight:700;
+
+      background:rgba(214,173,82,.09);
+      border:1px solid rgba(214,173,82,.16);
+
+      border-radius:20px;
+      padding:6px 10px;
+      margin-bottom:13px;
+    }
+
+    .qtext{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:22px;
+      line-height:1.45;
+
+      margin:0 0 23px;
+      letter-spacing:.05px;
+    }
+
+    /* OPTIONS */
+
+    .options{
+      display:flex;
+      flex-direction:column;
+      gap:11px;
+    }
+
+    .opt{
+      width:100%;
+      position:relative;
+
+      text-align:left;
+
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--white-border);
+
+      color:var(--cream);
+
+      border-radius:13px;
+      padding:14px 15px;
+
+      font-size:15px;
+      line-height:1.4;
+
+      cursor:pointer;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease,
+        background .15s ease,
+        box-shadow .15s ease;
+    }
+
+    .opt:hover{
+      transform:translateY(-1px);
+      border-color:rgba(214,173,82,.65);
+      background:rgba(214,173,82,.07);
+    }
+
+    .opt.selected{
+      border-color:var(--gold);
+      background:rgba(214,173,82,.13);
+      box-shadow:0 0 0 1px rgba(214,173,82,.08);
+    }
+
+    .opt:focus-visible{
+      outline:2px solid var(--gold-light);
+      outline-offset:2px;
+    }
+
+    /* NAVIGATION */
+
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:25px;
+    }
+
+    button{
+      font-family:inherit;
+    }
+
+    button.primary{
+      border:0;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--gold-light),
+          var(--gold)
+        );
+
+      color:#1b1a15;
+
+      border-radius:12px;
+
+      padding:12px 22px;
+
+      font-size:14px;
+      font-weight:800;
+
+      cursor:pointer;
+
+      box-shadow:0 7px 20px rgba(214,173,82,.13);
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        opacity .15s ease;
+    }
+
+    button.primary:hover:not(:disabled){
+      transform:translateY(-1px);
+      box-shadow:0 10px 25px rgba(214,173,82,.20);
+    }
+
+    button.primary:disabled{
+      opacity:.35;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    button.ghost{
+      background:transparent;
+      border:1px solid var(--white-border);
+      color:var(--muted);
+
+      border-radius:12px;
+
+      padding:12px 19px;
+
+      font-size:14px;
+
+      cursor:pointer;
+
+      transition:.15s ease;
+    }
+
+    button.ghost:hover{
+      color:var(--cream);
+      border-color:rgba(255,255,255,.25);
+      background:rgba(255,255,255,.035);
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    /* RESULT */
+
+    .result-title{
+      text-align:center;
+      color:var(--gold-light);
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-size:11px;
+      font-weight:700;
+      margin:0 0 16px;
+    }
+
+    .score-ring{
+      --pct:0;
+
+      width:170px;
+      height:170px;
+
+      margin:0 auto 20px;
+
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        conic-gradient(
+          var(--gold-light) calc(var(--pct) * 1%),
+          rgba(255,255,255,.07) 0
+        );
+
+      position:relative;
+    }
+
+    .score-ring::after{
+      content:"";
+      position:absolute;
+      inset:7px;
+      border-radius:50%;
+      background:var(--card);
+    }
+
+    .score-ring .inner{
+      width:130px;
+      height:130px;
+
+      border-radius:50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(214,173,82,.08),
+          transparent 70%
+        );
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .score-ring .inner .n{
+      font-family:Georgia,serif;
+      font-size:34px;
+      font-weight:600;
+    }
+
+    .score-ring .inner .lbl{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .verdict{
+      text-align:center;
+      font-family:Georgia,serif;
+      font-size:24px;
+      margin:0 0 7px;
+    }
+
+    .subverdict{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+      margin:0 0 25px;
+    }
+
+    /* REVIEW */
+
+    .review-title{
+      color:var(--gold-light);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:1.4px;
+      font-weight:700;
+      margin:0 0 10px;
+    }
+
+    .review{
+      display:flex;
+      flex-direction:column;
+      gap:9px;
+
+      margin-bottom:25px;
+
+      max-height:280px;
+      overflow-y:auto;
+
+      padding-right:3px;
+    }
+
+    .review::-webkit-scrollbar{
+      width:5px;
+    }
+
+    .review::-webkit-scrollbar-track{
+      background:rgba(255,255,255,.03);
+      border-radius:10px;
+    }
+
+    .review::-webkit-scrollbar-thumb{
+      background:rgba(214,173,82,.35);
+      border-radius:10px;
+    }
+
+    .review-item{
+      border:1px solid var(--white-border);
+      border-radius:11px;
+      padding:11px 12px;
+      font-size:13px;
+      background:rgba(255,255,255,.025);
+    }
+
+    .review-item .rq{
+      color:var(--muted);
+      line-height:1.4;
+      margin-bottom:5px;
+    }
+
+    .review-item .ra{
+      color:var(--bad);
+    }
+
+    .review-item .ra.ok{
+      color:var(--good);
+    }
+
+    .review-item .rc{
+      color:var(--good);
+      margin-top:3px;
+    }
+
+    /* SHARE */
+
+    .share-box{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:19px;
+    }
+
+    .share-title{
+      font-size:13px;
+      color:var(--muted);
+      margin:0 0 11px;
+      text-align:center;
+    }
+
+    .share-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      justify-content:center;
+      margin-bottom:17px;
+    }
+
+    .share-btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      padding:10px 13px;
+
+      border-radius:10px;
+
+      border:1px solid var(--white-border);
+
+      background:rgba(255,255,255,.035);
+
+      color:var(--cream);
+
+      font-size:13px;
+
+      text-decoration:none;
+
+      cursor:pointer;
+
+      transition:.15s ease;
+    }
+
+    .share-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.06);
+    }
+
+    .share-btn.wa{
+      border-color:rgba(37,211,102,.5);
+      color:#54df88;
+    }
+
+    .share-btn.tg{
+      border-color:rgba(84,169,235,.5);
+      color:#71bdf0;
+    }
+
+    .share-btn.fb{
+      border-color:rgba(66,103,178,.5);
+      color:#9bb3e4;
+    }
+
+    .share-btn.x{
+      border-color:rgba(255,255,255,.25);
+    }
+
+    .retake{
+      display:block;
+      width:100%;
+      text-align:center;
+      margin-top:5px;
+    }
+
+    /* FOOTER */
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.7;
+      margin-top:22px;
+    }
+
+    footer strong{
+      color:rgba(240,214,138,.75);
+      font-weight:600;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:480px){
+
+      .wrap{
+        padding-top:25px;
+      }
+
+      .card{
+        padding:21px 17px;
+        border-radius:17px;
+      }
+
+      header.top h1{
+        font-size:28px;
+      }
+
+      .qtext{
+        font-size:20px;
+      }
+
+      .opt{
+        padding:13px 13px;
+      }
+
+      .score-ring{
+        width:155px;
+        height:155px;
+      }
+
+      .score-ring .inner{
+        width:119px;
+        height:119px;
+      }
+    }
+  </style>
+
 </head>
+
 <body>
+
 <div class="wrap">
 
+  <!-- HEADER -->
   <header class="top">
-    <div class="mark">☾</div>
+
+    <div class="brand-mark">☾</div>
+
+    <div class="brand-small">
+      Islamic Knowledge
+    </div>
+
     <h1>Bari Quiz</h1>
-    <p>A short quiz on Islamic knowledge</p>
+
+    <p>
+      Test your knowledge. Learn something new.
+    </p>
+
   </header>
+
 
   <!-- QUIZ VIEW -->
   <section id="quizView" class="card">
-    <div class="progress" id="progressBar"></div>
-    <div class="qnum" id="qNum"></div>
-    <p class="qtext" id="qText"></p>
-    <div class="options" id="options"></div>
-    <div class="nav">
-      <button class="ghost" id="skipBtn" type="button">Skip</button>
-      <button class="primary" id="nextBtn" type="button" disabled>Next</button>
-    </div>
-  </section>
 
-  <!-- RESULT VIEW -->
-  <section id="resultView" class="card hidden">
-    <div class="score-ring" id="scoreRing">
-      <div class="inner">
-        <div class="n" id="scoreNum">0/0</div>
-        <div class="lbl">correct</div>
+    <div class="progress-head">
+      <span class="progress-label">
+        Quiz progress
+      </span>
+
+      <span
+        class="progress-percent"
+        id="progressPercent">
+        0%
+      </span>
+    </div>
+
+    <div class="progress-track">
+      <div
+        class="progress-fill"
+        id="progressFill">
       </div>
     </div>
-    <p class="verdict" id="verdictText"></p>
-    <p class="subverdict" id="subverdictText"></p>
 
-    <div class="review" id="reviewList"></div>
-
-    <p class="share-title">Share this quiz</p>
-    <div class="share-row">
-      <a class="share-btn wa" id="shareWA" target="_blank" rel="noopener">WhatsApp</a>
-      <a class="share-btn tg" id="shareTG" target="_blank" rel="noopener">Telegram</a>
-      <a class="share-btn fb" id="shareFB" target="_blank" rel="noopener">Facebook</a>
-      <a class="share-btn x" id="shareX" target="_blank" rel="noopener">X</a>
-      <button class="share-btn" id="shareCopy" type="button">Copy link</button>
+    <div
+      class="qnum"
+      id="qNum">
     </div>
 
-    <button class="primary retake" id="retakeBtn" type="button">Take another quiz</button>
+    <p
+      class="qtext"
+      id="qText">
+    </p>
+
+    <div
+      class="options"
+      id="options">
+    </div>
+
+    <div class="nav">
+
+      <button
+        class="ghost"
+        id="skipBtn"
+        type="button">
+        Skip
+      </button>
+
+      <button
+        class="primary"
+        id="nextBtn"
+        type="button"
+        disabled>
+        Next
+      </button>
+
+    </div>
+
   </section>
 
-  <footer>10 random questions, new order every attempt.<br>Powered by Ghani</footer>
+
+  <!-- RESULT VIEW -->
+  <section
+    id="resultView"
+    class="card hidden">
+
+    <p class="result-title">
+      Quiz complete
+    </p>
+
+    <div
+      class="score-ring"
+      id="scoreRing">
+
+      <div class="inner">
+
+        <div
+          class="n"
+          id="scoreNum">
+          0/0
+        </div>
+
+        <div class="lbl">
+          correct
+        </div>
+
+      </div>
+
+    </div>
+
+    <p
+      class="verdict"
+      id="verdictText">
+    </p>
+
+    <p
+      class="subverdict"
+      id="subverdictText">
+    </p>
+
+
+    <p class="review-title">
+      Answer review
+    </p>
+
+    <div
+      class="review"
+      id="reviewList">
+    </div>
+
+
+    <div class="share-box">
+
+      <p class="share-title">
+        Challenge your friends
+      </p>
+
+      <div class="share-row">
+
+        <a
+          class="share-btn wa"
+          id="shareWA"
+          target="_blank"
+          rel="noopener">
+          WhatsApp
+        </a>
+
+        <a
+          class="share-btn tg"
+          id="shareTG"
+          target="_blank"
+          rel="noopener">
+          Telegram
+        </a>
+
+        <a
+          class="share-btn fb"
+          id="shareFB"
+          target="_blank"
+          rel="noopener">
+          Facebook
+        </a>
+
+        <a
+          class="share-btn x"
+          id="shareX"
+          target="_blank"
+          rel="noopener">
+          X
+        </a>
+
+        <button
+          class="share-btn"
+          id="shareCopy"
+          type="button">
+          Copy link
+        </button>
+
+      </div>
+
+      <button
+        class="primary retake"
+        id="retakeBtn"
+        type="button">
+        Take another quiz
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <footer>
+    10 random questions · New order every attempt
+    <br>
+    <strong>Powered by Ghani</strong>
+  </footer>
+
 </div>
 
+
 <script>
+
 (function(){
+
+  /* =========================
+     QUESTION BANK
+  ========================= */
+
   var BANK = [
-    {q:"How many pillars of Islam are there?", a:["Four","Five","Six","Seven"], c:1},
-    {q:"What is the Islamic declaration of faith called?", a:["Salah","Zakat","Shahada","Sawm"], c:2},
-    {q:"During which month do Muslims fast?", a:["Shawwal","Muharram","Rajab","Ramadan"], c:3},
-    {q:"How many times a day are Muslims obligated to pray?", a:["Three","Four","Five","Six"], c:2},
-    {q:"What is the pilgrimage to Makkah called?", a:["Umrah","Hajj","Ziyarah","Sawm"], c:1},
-    {q:"What is the holy book of Islam called?", a:["Torah","Bible","Quran","Zabur"], c:2},
-    {q:"In which city was Prophet Muhammad (PBUH) born?", a:["Madinah","Makkah","Jerusalem","Damascus"], c:1},
-    {q:"What is the direction Muslims face during prayer called?", a:["Qiblah","Minbar","Mihrab","Adhan"], c:0},
-    {q:"What is the call to prayer called?", a:["Iqamah","Khutbah","Adhan","Dua"], c:2},
-    {q:"Zakat refers to which act of worship?", a:["Fasting","Charity given yearly","Pilgrimage","Testimony of faith"], c:1},
-    {q:"Which angel is known for delivering revelations to prophets?", a:["Mikail","Israfil","Jibril","Malik"], c:2},
-    {q:"What is the name of the first house of worship built for humanity, according to Islam?", a:["Al-Aqsa Mosque","The Kaaba","The Prophet's Mosque","Masjid Quba"], c:1},
-    {q:"On the Islamic calendar, what type of calendar is it?", a:["Solar","Lunar","Solar-Lunar hybrid","Fixed 365-day"], c:1},
-    {q:"Which night in Ramadan is considered better than a thousand months?", a:["Laylat al-Qadr","Laylat al-Bara'ah","Isra and Mi'raj night","Eid night"], c:0},
-    {q:"What does the word 'Islam' mean?", a:["Peace only","Submission to God","Prayer","Charity"], c:1},
-    {q:"What are followers of Islam called?", a:["Muslims","Sufis","Imams","Hafiz"], c:0},
-    {q:"Which prophet is associated with building the Kaaba along with his son?", a:["Musa (Moses)","Nuh (Noah)","Ibrahim (Abraham)","Dawud (David)"], c:2},
-    {q:"What is a person who has memorized the entire Quran called?", a:["Qari","Hafiz","Muadhin","Alim"], c:1},
-    {q:"What is the Eid celebrated at the end of Ramadan called?", a:["Eid al-Adha","Eid al-Fitr","Eid Milad","Eid al-Ghadir"], c:1},
-    {q:"Eid al-Adha commemorates the willingness of which prophet to sacrifice his son?", a:["Ibrahim (Abraham)","Yusuf (Joseph)","Yaqub (Jacob)","Ismail (Ishmael)"], c:0},
-    {q:"What is a mosque called in Arabic?", a:["Masjid","Kaaba","Minaret","Sajdah"], c:0},
-    {q:"Which is the shortest chapter (surah) in the Quran by verse count?", a:["Al-Fatiha","Al-Ikhlas","Al-Kawthar","An-Nas"], c:2},
-    {q:"What is voluntary fasting outside Ramadan generally called?", a:["Fard","Sunnah/Nafl fasting","Wajib","Haram"], c:1},
-    {q:"Which of these is one of the Five Pillars of Islam?", a:["Meditation","Fasting in Ramadan","Vegetarianism","Silence retreats"], c:1},
-    {q:"What is the term for the sayings and actions of Prophet Muhammad (PBUH)?", a:["Hadith","Fiqh","Tafsir","Aqidah"], c:0}
+
+    {
+      q:"How many pillars of Islam are there?",
+      a:["Four","Five","Six","Seven"],
+      c:1
+    },
+
+    {
+      q:"What is the Islamic declaration of faith called?",
+      a:["Salah","Zakat","Shahada","Sawm"],
+      c:2
+    },
+
+    {
+      q:"During which month do Muslims fast?",
+      a:["Shawwal","Muharram","Rajab","Ramadan"],
+      c:3
+    },
+
+    {
+      q:"How many times a day are Muslims obligated to pray?",
+      a:["Three","Four","Five","Six"],
+      c:2
+    },
+
+    {
+      q:"What is the pilgrimage to Makkah called?",
+      a:["Umrah","Hajj","Ziyarah","Sawm"],
+      c:1
+    },
+
+    {
+      q:"What is the holy book of Islam called?",
+      a:["Torah","Bible","Quran","Zabur"],
+      c:2
+    },
+
+    {
+      q:"In which city was Prophet Muhammad (PBUH) born?",
+      a:["Madinah","Makkah","Jerusalem","Damascus"],
+      c:1
+    },
+
+    {
+      q:"What is the direction Muslims face during prayer called?",
+      a:["Qiblah","Minbar","Mihrab","Adhan"],
+      c:0
+    },
+
+    {
+      q:"What is the call to prayer called?",
+      a:["Iqamah","Khutbah","Adhan","Dua"],
+      c:2
+    },
+
+    {
+      q:"Zakat refers to which act of worship?",
+      a:[
+        "Fasting",
+        "Charity given yearly",
+        "Pilgrimage",
+        "Testimony of faith"
+      ],
+      c:1
+    },
+
+    {
+      q:"Which angel is known for delivering revelations to prophets?",
+      a:["Mikail","Israfil","Jibril","Malik"],
+      c:2
+    },
+
+    {
+      q:"What is the name of the first house of worship built for humanity, according to Islam?",
+      a:[
+        "Al-Aqsa Mosque",
+        "The Kaaba",
+        "The Prophet's Mosque",
+        "Masjid Quba"
+      ],
+      c:1
+    },
+
+    {
+      q:"On the Islamic calendar, what type of calendar is it?",
+      a:[
+        "Solar",
+        "Lunar",
+        "Solar-Lunar hybrid",
+        "Fixed 365-day"
+      ],
+      c:1
+    },
+
+    {
+      q:"Which night in Ramadan is considered better than a thousand months?",
+      a:[
+        "Laylat al-Qadr",
+        "Laylat al-Bara'ah",
+        "Isra and Mi'raj night",
+        "Eid night"
+      ],
+      c:0
+    },
+
+    {
+      q:"What does the word 'Islam' mean?",
+      a:[
+        "Peace only",
+        "Submission to God",
+        "Prayer",
+        "Charity"
+      ],
+      c:1
+    },
+
+    {
+      q:"What are followers of Islam called?",
+      a:[
+        "Muslims",
+        "Sufis",
+        "Imams",
+        "Hafiz"
+      ],
+      c:0
+    },
+
+    {
+      q:"Which prophet is associated with building the Kaaba along with his son?",
+      a:[
+        "Musa (Moses)",
+        "Nuh (Noah)",
+        "Ibrahim (Abraham)",
+        "Dawud (David)"
+      ],
+      c:2
+    },
+
+    {
+      q:"What is a person who has memorized the entire Quran called?",
+      a:[
+        "Qari",
+        "Hafiz",
+        "Muadhin",
+        "Alim"
+      ],
+      c:1
+    },
+
+    {
+      q:"What is the Eid celebrated at the end of Ramadan called?",
+      a:[
+        "Eid al-Adha",
+        "Eid al-Fitr",
+        "Eid Milad",
+        "Eid al-Ghadir"
+      ],
+      c:1
+    },
+
+    {
+      q:"Eid al-Adha commemorates the willingness of which prophet to sacrifice his son?",
+      a:[
+        "Ibrahim (Abraham)",
+        "Yusuf (Joseph)",
+        "Yaqub (Jacob)",
+        "Ismail (Ishmael)"
+      ],
+      c:0
+    },
+
+    {
+      q:"What is a mosque called in Arabic?",
+      a:[
+        "Masjid",
+        "Kaaba",
+        "Minaret",
+        "Sajdah"
+      ],
+      c:0
+    },
+
+    {
+      q:"Which is the shortest chapter (surah) in the Quran by verse count?",
+      a:[
+        "Al-Fatiha",
+        "Al-Ikhlas",
+        "Al-Kawthar",
+        "An-Nas"
+      ],
+      c:2
+    },
+
+    {
+      q:"What is voluntary fasting outside Ramadan generally called?",
+      a:[
+        "Fard",
+        "Sunnah/Nafl fasting",
+        "Wajib",
+        "Haram"
+      ],
+      c:1
+    },
+
+    {
+      q:"Which of these is one of the Five Pillars of Islam?",
+      a:[
+        "Meditation",
+        "Fasting in Ramadan",
+        "Vegetarianism",
+        "Silence retreats"
+      ],
+      c:1
+    },
+
+    {
+      q:"What is the term for the sayings and actions of Prophet Muhammad (PBUH)?",
+      a:[
+        "Hadith",
+        "Fiqh",
+        "Tafsir",
+        "Aqidah"
+      ],
+      c:0
+    }
+
   ];
 
+
+  /* =========================
+     QUIZ SETTINGS
+  ========================= */
+
   var TOTAL_Q = 10;
+
   var quiz = [];
   var current = 0;
   var answers = [];
   var selectedIdx = null;
 
+
+  /* =========================
+     HELPERS
+  ========================= */
+
   function shuffle(arr){
+
     var a = arr.slice();
+
     for(var i=a.length-1;i>0;i--){
+
       var j = Math.floor(Math.random()*(i+1));
-      var t=a[i]; a[i]=a[j]; a[j]=t;
+
+      var t = a[i];
+
+      a[i] = a[j];
+
+      a[j] = t;
     }
+
     return a;
   }
 
-  function buildQuiz(){
-    var picked = shuffle(BANK).slice(0, TOTAL_Q);
-    quiz = picked.map(function(item){
-      var optIdx = shuffle([0,1,2,3]);
-      var newOptions = optIdx.map(function(i){ return item.a[i]; });
-      var newCorrect = optIdx.indexOf(item.c);
-      return {q:item.q, a:newOptions, c:newCorrect};
-    });
-    current = 0;
-    answers = new Array(quiz.length).fill(null);
-    selectedIdx = null;
-  }
-
-  var progressBar = document.getElementById('progressBar');
-  var qNum = document.getElementById('qNum');
-  var qText = document.getElementById('qText');
-  var optionsEl = document.getElementById('options');
-  var nextBtn = document.getElementById('nextBtn');
-  var skipBtn = document.getElementById('skipBtn');
-  var quizView = document.getElementById('quizView');
-  var resultView = document.getElementById('resultView');
-
-  function renderProgress(){
-    progressBar.innerHTML = '';
-    for(var i=0;i<quiz.length;i++){
-      var el = document.createElement('i');
-      if(i < current || (i===current && selectedIdx!==null)) el.className='done';
-      progressBar.appendChild(el);
-    }
-  }
-
-  function renderQuestion(){
-    selectedIdx = answers[current];
-    var item = quiz[current];
-    qNum.textContent = 'Question ' + (current+1) + ' of ' + quiz.length;
-    qText.textContent = item.q;
-    optionsEl.innerHTML = '';
-    item.a.forEach(function(opt, idx){
-      var b = document.createElement('button');
-      b.type='button';
-      b.className='opt' + (selectedIdx===idx ? ' selected' : '');
-      b.textContent = opt;
-      b.addEventListener('click', function(){
-        selectedIdx = idx;
-        answers[current] = idx;
-        Array.prototype.forEach.call(optionsEl.children, function(c){ c.classList.remove('selected'); });
-        b.classList.add('selected');
-        nextBtn.disabled = false;
-        renderProgress();
-      });
-      optionsEl.appendChild(b);
-    });
-    nextBtn.disabled = selectedIdx===null;
-    nextBtn.textContent = (current === quiz.length-1) ? 'See result' : 'Next';
-    renderProgress();
-  }
-
-  nextBtn.addEventListener('click', function(){
-    if(current < quiz.length-1){
-      current++;
-      renderQuestion();
-    } else {
-      showResults();
-    }
-  });
-
-  skipBtn.addEventListener('click', function(){
-    answers[current] = (selectedIdx!==null) ? selectedIdx : -1;
-    if(current < quiz.length-1){
-      current++;
-      renderQuestion();
-    } else {
-      showResults();
-    }
-  });
-
-  function verdictFor(pct){
-    if(pct === 100) return ["Perfect score", "Mashallah — flawless knowledge of the basics."];
-    if(pct >= 80) return ["Excellent", "You clearly know your Islamic basics well."];
-    if(pct >= 50) return ["Good effort", "A solid attempt — a little more study will sharpen this further."];
-    return ["Keep learning", "A good starting point — revisit the basics and try again."];
-  }
-
-  function showResults(){
-    var correct = 0;
-    var reviewHTML = '';
-    quiz.forEach(function(item, idx){
-      var given = answers[idx];
-      var isCorrect = given === item.c;
-      if(isCorrect) correct++;
-      reviewHTML += '<div class="review-item">' +
-        '<div class="rq">Q'+(idx+1)+'. '+escapeHtml(item.q)+'</div>' +
-        '<div class="ra '+(isCorrect?'ok':'')+'">Your answer: ' + escapeHtml(given>=0 && given!==null ? item.a[given] : 'Skipped') + '</div>' +
-        (isCorrect ? '' : '<div class="rc">Correct: '+escapeHtml(item.a[item.c])+'</div>') +
-        '</div>';
-    });
-
-    var pct = Math.round((correct/quiz.length)*100);
-    document.getElementById('scoreNum').textContent = correct + '/' + quiz.length;
-    document.getElementById('scoreRing').style.setProperty('--pct', pct);
-    var v = verdictFor(pct);
-    document.getElementById('verdictText').textContent = v[0] + ' (' + pct + '%)';
-    document.getElementById('subverdictText').textContent = v[1];
-    document.getElementById('reviewList').innerHTML = reviewHTML;
-
-    var shareText = 'I scored ' + correct + '/' + quiz.length + ' (' + pct + '%) on the Bari Quiz — an Islamic knowledge quiz. Try it yourself:';
-    var pageUrl = window.location.href.split('#')[0];
-    document.getElementById('shareWA').href = 'https://wa.me/?text=' + encodeURIComponent(shareText + ' ' + pageUrl);
-    document.getElementById('shareTG').href = 'https://t.me/share/url?url=' + encodeURIComponent(pageUrl) + '&text=' + encodeURIComponent(shareText);
-    document.getElementById('shareFB').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl);
-    document.getElementById('shareX').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl);
-
-    document.getElementById('shareCopy').onclick = function(){
-      var btn = this;
-      var full = shareText + ' ' + pageUrl;
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(full).then(function(){
-          btn.textContent = 'Copied!';
-          setTimeout(function(){ btn.textContent = 'Copy link'; }, 1500);
-        }).catch(function(){ fallbackCopy(full, btn); });
-      } else {
-        fallbackCopy(full, btn);
-      }
-    };
-
-    quizView.classList.add('hidden');
-    resultView.classList.remove('hidden');
-    window.scrollTo(0,0);
-  }
-
-  function fallbackCopy(text, btn){
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    try{ document.execCommand('copy'); btn.textContent='Copied!'; setTimeout(function(){btn.textContent='Copy link';},1500); }catch(e){}
-    document.body.removeChild(ta);
-  }
 
   function escapeHtml(s){
+
     var d = document.createElement('div');
-    d.textContent = s == null ? '' : s;
+
+    d.textContent =
+      s == null ? '' : s;
+
     return d.innerHTML;
   }
 
-  document.getElementById('retakeBtn').addEventListener('click', function(){
-    resultView.classList.add('hidden');
-    quizView.classList.remove('hidden');
-    buildQuiz();
-    renderQuestion();
-  });
+
+  /* =========================
+     BUILD QUIZ
+  ========================= */
+
+  function buildQuiz(){
+
+    var picked =
+      shuffle(BANK).slice(0,TOTAL_Q);
+
+    quiz = picked.map(function(item){
+
+      var optIdx =
+        shuffle([0,1,2,3]);
+
+      var newOptions =
+        optIdx.map(function(i){
+          return item.a[i];
+        });
+
+      var newCorrect =
+        optIdx.indexOf(item.c);
+
+      return {
+        q:item.q,
+        a:newOptions,
+        c:newCorrect
+      };
+
+    });
+
+    current = 0;
+
+    answers =
+      new Array(quiz.length).fill(null);
+
+    selectedIdx = null;
+  }
+
+
+  /* =========================
+     ELEMENTS
+  ========================= */
+
+  var progressFill =
+    document.getElementById('progressFill');
+
+  var progressPercent =
+    document.getElementById('progressPercent');
+
+  var qNum =
+    document.getElementById('qNum');
+
+  var qText =
+    document.getElementById('qText');
+
+  var optionsEl =
+    document.getElementById('options');
+
+  var nextBtn =
+    document.getElementById('nextBtn');
+
+  var skipBtn =
+    document.getElementById('skipBtn');
+
+  var quizView =
+    document.getElementById('quizView');
+
+  var resultView =
+    document.getElementById('resultView');
+
+
+  /* =========================
+     PROGRESS
+  ========================= */
+
+  function renderProgress(){
+
+    var completed =
+      current + (selectedIdx !== null ? 1 : 0);
+
+    var pct =
+      Math.min(
+        100,
+        Math.round((completed / quiz.length) * 100)
+      );
+
+    progressFill.style.width =
+      pct + '%';
+
+    progressPercent.textContent =
+      pct + '%';
+  }
+
+
+  /* =========================
+     RENDER QUESTION
+  ========================= */
+
+  function renderQuestion(){
+
+    selectedIdx =
+      answers[current];
+
+    var item =
+      quiz[current];
+
+    qNum.textContent =
+      'Question ' +
+      (current + 1) +
+      ' of ' +
+      quiz.length;
+
+    qText.textContent =
+      item.q;
+
+    optionsEl.innerHTML = '';
+
+    item.a.forEach(function(opt,idx){
+
+      var b =
+        document.createElement('button');
+
+      b.type = 'button';
+
+      b.className =
+        'opt' +
+        (selectedIdx === idx
+          ? ' selected'
+          : '');
+
+      b.textContent =
+        opt;
+
+      b.addEventListener(
+        'click',
+        function(){
+
+          selectedIdx = idx;
+
+          answers[current] =
+            idx;
+
+          Array.prototype.forEach.call(
+            optionsEl.children,
+            function(c){
+              c.classList.remove('selected');
+            }
+          );
+
+          b.classList.add('selected');
+
+          nextBtn.disabled =
+            false;
+
+          renderProgress();
+        }
+      );
+
+      optionsEl.appendChild(b);
+
+    });
+
+
+    nextBtn.disabled =
+      selectedIdx === null;
+
+    nextBtn.textContent =
+      current === quiz.length - 1
+        ? 'See Result'
+        : 'Next';
+
+    renderProgress();
+  }
+
+
+  /* =========================
+     NEXT
+  ========================= */
+
+  nextBtn.addEventListener(
+    'click',
+    function(){
+
+      if(current < quiz.length - 1){
+
+        current++;
+
+        renderQuestion();
+
+      }else{
+
+        showResults();
+      }
+
+    }
+  );
+
+
+  /* =========================
+     SKIP
+  ========================= */
+
+  skipBtn.addEventListener(
+    'click',
+    function(){
+
+      answers[current] =
+        selectedIdx !== null
+          ? selectedIdx
+          : -1;
+
+      if(current < quiz.length - 1){
+
+        current++;
+
+        renderQuestion();
+
+      }else{
+
+        showResults();
+      }
+
+    }
+  );
+
+
+  /* =========================
+     VERDICT
+  ========================= */
+
+  function verdictFor(pct){
+
+    if(pct === 100){
+
+      return [
+        "Perfect Score",
+        "Mashallah — flawless knowledge of the basics."
+      ];
+
+    }
+
+    if(pct >= 80){
+
+      return [
+        "Excellent",
+        "You clearly know your Islamic basics well."
+      ];
+
+    }
+
+    if(pct >= 50){
+
+      return [
+        "Good Effort",
+        "A solid attempt — keep learning and growing."
+      ];
+
+    }
+
+    return [
+      "Keep Learning",
+      "A good starting point — revisit the basics and try again."
+    ];
+
+  }
+
+
+  /* =========================
+     RESULTS
+  ========================= */
+
+  function showResults(){
+
+    var correct = 0;
+
+    var reviewHTML = '';
+
+
+    quiz.forEach(
+      function(item,idx){
+
+        var given =
+          answers[idx];
+
+        var isCorrect =
+          given === item.c;
+
+        if(isCorrect){
+
+          correct++;
+        }
+
+
+        reviewHTML +=
+
+          '<div class="review-item">' +
+
+            '<div class="rq">' +
+              'Q' +
+              (idx + 1) +
+              '. ' +
+              escapeHtml(item.q) +
+            '</div>' +
+
+            '<div class="ra ' +
+              (isCorrect ? 'ok' : '') +
+            '">' +
+
+              'Your answer: ' +
+
+              escapeHtml(
+                given >= 0 &&
+                given !== null
+                  ? item.a[given]
+                  : 'Skipped'
+              ) +
+
+            '</div>' +
+
+            (
+              isCorrect
+                ? ''
+                :
+                '<div class="rc">' +
+                  'Correct: ' +
+                  escapeHtml(item.a[item.c]) +
+                '</div>'
+            ) +
+
+          '</div>';
+
+      }
+    );
+
+
+    var pct =
+      Math.round(
+        (correct / quiz.length) * 100
+      );
+
+
+    document.getElementById(
+      'scoreNum'
+    ).textContent =
+      correct +
+      '/' +
+      quiz.length;
+
+
+    document.getElementById(
+      'scoreRing'
+    ).style.setProperty(
+      '--pct',
+      pct
+    );
+
+
+    var v =
+      verdictFor(pct);
+
+
+    document.getElementById(
+      'verdictText'
+    ).textContent =
+      v[0] +
+      ' (' +
+      pct +
+      '%)';
+
+
+    document.getElementById(
+      'subverdictText'
+    ).textContent =
+      v[1];
+
+
+    document.getElementById(
+      'reviewList'
+    ).innerHTML =
+      reviewHTML;
+
+
+    /* SHARE */
+
+    var shareText =
+      'I scored ' +
+      correct +
+      '/' +
+      quiz.length +
+      ' (' +
+      pct +
+      '%) on Bari Quiz — an Islamic knowledge quiz. Try it yourself:';
+
+
+    var pageUrl =
+      window.location.href.split('#')[0];
+
+
+    document.getElementById(
+      'shareWA'
+    ).href =
+      'https://wa.me/?text=' +
+      encodeURIComponent(
+        shareText +
+        ' ' +
+        pageUrl
+      );
+
+
+    document.getElementById(
+      'shareTG'
+    ).href =
+      'https://t.me/share/url?url=' +
+      encodeURIComponent(pageUrl) +
+      '&text=' +
+      encodeURIComponent(shareText);
+
+
+    document.getElementById(
+      'shareFB'
+    ).href =
+      'https://www.facebook.com/sharer/sharer.php?u=' +
+      encodeURIComponent(pageUrl);
+
+
+    document.getElementById(
+      'shareX'
+    ).href =
+      'https://twitter.com/intent/tweet?text=' +
+      encodeURIComponent(shareText) +
+      '&url=' +
+      encodeURIComponent(pageUrl);
+
+
+    /* COPY */
+
+    document.getElementById(
+      'shareCopy'
+    ).onclick =
+      function(){
+
+        var btn = this;
+
+        var full =
+          shareText +
+          ' ' +
+          pageUrl;
+
+
+        if(
+          navigator.clipboard &&
+          navigator.clipboard.writeText
+        ){
+
+          navigator.clipboard
+            .writeText(full)
+            .then(function(){
+
+              btn.textContent =
+                'Copied!';
+
+              setTimeout(
+                function(){
+
+                  btn.textContent =
+                    'Copy link';
+
+                },
+                1500
+              );
+
+            })
+            .catch(function(){
+
+              fallbackCopy(
+                full,
+                btn
+              );
+
+            });
+
+        }else{
+
+          fallbackCopy(
+            full,
+            btn
+          );
+
+        }
+
+      };
+
+
+    quizView.classList.add(
+      'hidden'
+    );
+
+    resultView.classList.remove(
+      'hidden'
+    );
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }
+
+
+  /* =========================
+     FALLBACK COPY
+  ========================= */
+
+  function fallbackCopy(
+    text,
+    btn
+  ){
+
+    var ta =
+      document.createElement(
+        'textarea'
+      );
+
+    ta.value =
+      text;
+
+    document.body.appendChild(
+      ta
+    );
+
+    ta.select();
+
+    try{
+
+      document.execCommand(
+        'copy'
+      );
+
+      btn.textContent =
+        'Copied!';
+
+      setTimeout(
+        function(){
+
+          btn.textContent =
+            'Copy link';
+
+        },
+        1500
+      );
+
+    }catch(e){}
+
+    document.body.removeChild(
+      ta
+    );
+
+  }
+
+
+  /* =========================
+     RETAKE
+  ========================= */
+
+  document.getElementById(
+    'retakeBtn'
+  ).addEventListener(
+    'click',
+    function(){
+
+      resultView.classList.add(
+        'hidden'
+      );
+
+      quizView.classList.remove(
+        'hidden'
+      );
+
+      buildQuiz();
+
+      renderQuestion();
+
+    }
+  );
+
+
+  /* =========================
+     START
+  ========================= */
 
   buildQuiz();
+
   renderQuestion();
+
 })();
+
 </script>
+
 </body>
 </html>
